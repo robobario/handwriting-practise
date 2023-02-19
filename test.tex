@@ -1,0 +1,77 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[left=1.5cm, right=2cm]{geometry}
+% necessary packages
+\usepackage{tikz}
+
+% set the font
+\usepackage{fontspec}
+\setmainfont{[kiwischoolhandwritingregular.ttf]}
+
+% increase baseline skip
+\usepackage{setspace}
+\setstretch{2.5}
+
+% define height of lowercase letters
+\newcommand{\lowercaseheight}{1ex}
+% define height of uppercase letters
+\newcommand{\uppercaseheight}{1.7ex}
+% define depth of descenders
+\newcommand{\descenderdeptha}{-1ex}
+\newcommand{\descenderdepthb}{-1.7ex}
+\newcommand{\descenderdepthc}{-2.7ex}
+    % you may add more values here and then use them in the {tikzpicture}
+    % to add more line to your grid
+
+
+% package to have a "every line" hook
+\usepackage{lineno}
+
+\newenvironment{drillsheet}{%
+    % let the "line numbers" start directly at the text
+    \setlength\linenumbersep{0pt}%
+    % let the "line numbers" be the grid
+    \renewcommand{\thelinenumber}{%
+        \begin{tikzpicture}[overlay]
+                \color{black!25}%
+                % baseline
+                \draw ((0,0) -- ++(\textwidth,0);
+                % lowercase height
+                \draw [ultra thin] ((0,\lowercaseheight) -- ++(\textwidth,0);
+                % uppercase height
+                \draw (0,\uppercaseheight) -- ++(\textwidth,0);
+                % descender depth
+                \draw [ultra thin] (0,\descenderdeptha) -- ++(\textwidth,0);
+                \draw [ultra thin] (0,\descenderdepthb) -- ++(\textwidth,0);
+                \draw [ultra thin] (0,\descenderdepthc) -- ++(\textwidth,0);
+        \end{tikzpicture}%
+    }%
+    % the font and color of the numbers must be set explicitly
+    \renewcommand\linenumberfont{\normalfont\color{black}}
+    % start "line numbering", i.e. the grid
+    \begin{linenumbers}%
+        % set text color to gray
+        \color{black}%
+}{
+    % end "numbering", i.e. the grid
+    \end{linenumbers}%
+}
+
+\newenvironment{fakedisplaymath}{%
+   \begin{center}%
+   $\displaystyle
+}{%
+   $%
+   \end{center}%
+}
+
+\begin{document}
+\Large
+\begin{drillsheet}
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit
+    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+    culpa qui officia deserunt mollit anim id est laborum.
+\end{drillsheet}
+\end{document}
