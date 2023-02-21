@@ -1,0 +1,12 @@
+{
+   "samples": {
+       "medium-font": {
+           "dir": "medium-font",
+           "font-command": "\\Huge"
+       },
+       "large-font": {
+           "dir": "large-font",
+           "font-command": "\\fontsize{40}{48} \\selectfont"
+       }
+   }
+}
