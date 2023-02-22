@@ -10,8 +10,15 @@ gid = int(sys.argv[4])
 with open(os.path.join(directory, "config.json")) as f:
   config = json.load(f)
 
-with open("test.tex") as t:
-  template = t.read()
+file_path = os.path.dirname(os.path.realpath(__file__))
+templates = {}
+template_dir = os.path.join(file_path, "templates")
+for filename in os.listdir(template_dir):
+  f = os.path.join(template_dir, filename)
+  if os.path.isfile(f):
+    with open(f) as template_file:
+      templates[filename] = template_file.read()
+  
 
 def chown(path, user, group):
     try:
@@ -38,6 +45,7 @@ def process(dir, subpath, config):
            break
         with open(f) as guts:
            body = guts.read().strip()
+        template = templates[config["template"]]
         with_body = template.replace("%%BODY_GO_HERE%%", body)
         with_font = with_body.replace("%%FONTSIZE_GO_HERE%%", config["font-command"])
         out_tex_file = os.path.join(outsubdir, filename + ".tex")

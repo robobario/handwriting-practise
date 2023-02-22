@@ -13,6 +13,6 @@ RUN curl -okiwi.zip -L https://dl.dafont.com/dl/?f=kiwi_school_handwriting && \
     wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh
 
 RUN /root/bin/tlmgr install environ pgf setspace lineno
-COPY test.tex test.tex
+COPY templates/ templates
 COPY process.py process.py
 ENTRYPOINT ["python", "process.py", "/data", "/output"]
