@@ -77,6 +77,7 @@ def generate_index(path, relative_dir="/"):
     elif os.path.isdir(f):
       directories.append(filename)
   files.sort()
+  directories.sort()
   dir_rows = ["<tr><td><span class=\"icon-text\"><span class=\"icon\"><icon class=\"fas fa-regular fa-folder\"></icon></span><span><a href=\"./" + d + "/index.html\">"+d+"</a></span></span></td></tr>" for d in directories]
   file_rows = ["<tr><td><span class=\"icon-text\"><span class=\"icon\"><icon class=\"fas fa-regular fa-file-pdf\"></icon></span><span><a href=\"./" + f + "\">"+f+"</a></span></span></td></tr>" for f in files if f.endswith(".pdf")]
   template = templates["index_page.html"]    
