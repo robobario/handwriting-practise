@@ -31,6 +31,10 @@ def chown(path, user, group):
     except OSError as e:
         raise e 
 
+def read(path):
+    with open(path) as guts:
+        return guts.read()
+
 def process(dir, subpath, config):
   outsubdir = os.path.join(outdir, subpath)
   if not os.path.exists(outsubdir):
@@ -43,10 +47,11 @@ def process(dir, subpath, config):
         if os.path.isfile(target_file):
            print("skipping " + f + " as pdf exists already in out dir")
            break
-        with open(f) as guts:
-           body = guts.read().strip()
+        body = read(f).strip()
+        print(body)
         template = templates[config["template"]]
-        template = template.replace("%%BODY_GO_HERE%%", body)
+        template = template.replace("%%BODY%%", body)
+        print(template)
         for key, value in config["parameters"].items():
             template = template.replace(key, value)
         out_tex_file = os.path.join(outsubdir, filename + ".tex")
@@ -59,8 +64,36 @@ def process(dir, subpath, config):
     if os.path.isdir(f):
         process(os.path.join(dir, filename), os.path.join(subpath, filename), config)
 
+def generate_index(path, relative_dir="/"):
+  if relative_dir == "/":
+    header = "NZ Handwriting Sheets"
+  else:
+    header = os.path.basename(path)
+  directories = []
+  files = []
+  for filename in os.listdir(path):
+    f = os.path.join(path, filename)
+    if os.path.isfile(f):
+      files.append(filename)
+    elif os.path.isdir(f):
+      directories.append(filename)
+  dir_rows = ["<tr><td><span class=\"icon-text\"><span class=\"icon\"><icon class=\"fas fa-regular fa-folder\"></icon></span><span><a href=\"./" + d + "/index.html\">"+d+"</a></span></span></td></tr>" for d in directories]
+  file_rows = ["<tr><td><span class=\"icon-text\"><span class=\"icon\"><icon class=\"fas fa-regular fa-file-pdf\"></icon></span><span><a href=\"./" + f + "\">"+f+"</a></span></span></td></tr>" for f in files if f.endswith(".pdf")]
+  template = templates["index_page.html"]    
+  file_blob = "\n".join(file_rows)
+  dir_blob= "\n".join(dir_rows)
+  rows = dir_blob + "\n" + file_blob
+  template = template.replace("%%HEADER%%", header)
+  template = template.replace("%%ROWS%%", rows)
+  with open(os.path.join(path, "index.html"), "w") as out:
+      out.write(template)
+  for dir in directories:
+      generate_index(os.path.join(path, dir), os.path.join(relative_dir, dir))
+    
+
 for key, sample in config["samples"].items():
   subdir = os.path.join(directory, sample["dir"])
   outsubdir = os.path.join(outdir, key)
   process(subdir, key, sample)
-  chown(outdir, uid, gid)
+generate_index(outdir)
+chown(outdir, uid, gid)
