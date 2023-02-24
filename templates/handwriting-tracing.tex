@@ -26,7 +26,7 @@
     % let the "line numbers" be the grid
     \renewcommand{\thelinenumber}{%
         \begin{tikzpicture}[overlay]
-                \color{black!20}%
+                \color{black!50}%
                 % baseline
                 \draw [semithick] ((0,0) -- ++(\textwidth,0);
                 % lowercase height
@@ -37,11 +37,11 @@
         \end{tikzpicture}%
     }%
     % the font and color of the numbers must be set explicitly
-    \renewcommand\linenumberfont{\normalfont\color{black!20}}
+    \renewcommand\linenumberfont{\normalfont\color{black!50}}
     % start "line numbering", i.e. the grid
     \begin{linenumbers}%
         % set text color to gray
-        \color{black!20}%
+        \color{black!50}%
 }{
     % end "numbering", i.e. the grid
     \end{linenumbers}%
