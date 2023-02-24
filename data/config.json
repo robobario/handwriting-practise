@@ -2,12 +2,16 @@
    "samples": {
        "medium-font": {
            "dir": "medium-font",
-           "font-command": "\\Huge",
+           "parameters": {
+               "%%FONTSIZE%%": "\\Huge"
+           },
            "template": "handwriting.tex"
        },
        "large-font": {
            "dir": "large-font",
-           "font-command": "\\fontsize{40}{48} \\selectfont",
+           "parameters": {
+               "%%FONTSIZE%%": "\\fontsize{40}{48} \\selectfont"
+           },
            "template": "handwriting.tex"
        }
    }

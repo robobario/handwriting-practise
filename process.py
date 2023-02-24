@@ -46,11 +46,12 @@ def process(dir, subpath, config):
         with open(f) as guts:
            body = guts.read().strip()
         template = templates[config["template"]]
-        with_body = template.replace("%%BODY_GO_HERE%%", body)
-        with_font = with_body.replace("%%FONTSIZE_GO_HERE%%", config["font-command"])
+        template = template.replace("%%BODY_GO_HERE%%", body)
+        for key, value in config["parameters"].items():
+            template = template.replace(key, value)
         out_tex_file = os.path.join(outsubdir, filename + ".tex")
         with open(out_tex_file, "w") as out:
-           out.write(with_font)
+           out.write(template)
         os.system('/root/bin/xelatex ' + out_tex_file)
            
         shutil.move(out_pdf_file, target_file)
