@@ -46,21 +46,20 @@ def process(dir, subpath, config):
         target_file = os.path.join(outsubdir, out_pdf_file)
         if os.path.isfile(target_file):
            print("skipping " + f + " as pdf exists already in out dir")
-           break
-        body = read(f).strip()
-        print(body)
-        template = templates[config["template"]]
-        template = template.replace("%%BODY%%", body)
-        print(template)
-        for key, value in config["parameters"].items():
-            template = template.replace(key, value)
-        out_tex_file = os.path.join(outsubdir, filename + ".tex")
-        with open(out_tex_file, "w") as out:
-           out.write(template)
-        os.system('/root/bin/xelatex ' + out_tex_file)
-           
-        shutil.move(out_pdf_file, target_file)
-        os.remove(out_tex_file)
+        else:
+           body = read(f).strip()
+           print(body)
+           template = templates[config["template"]]
+           template = template.replace("%%BODY%%", body)
+           print(template)
+           for key, value in config["parameters"].items():
+              template = template.replace(key, value)
+           out_tex_file = os.path.join(outsubdir, filename + ".tex")
+           with open(out_tex_file, "w") as out:
+              out.write(template)
+           os.system('/root/bin/xelatex "' + out_tex_file + '"')
+           shutil.move(out_pdf_file, target_file)
+           os.remove(out_tex_file)
     if os.path.isdir(f):
         process(os.path.join(dir, filename), os.path.join(subpath, filename), config)
 
@@ -77,6 +76,7 @@ def generate_index(path, relative_dir="/"):
       files.append(filename)
     elif os.path.isdir(f):
       directories.append(filename)
+  files.sort()
   dir_rows = ["<tr><td><span class=\"icon-text\"><span class=\"icon\"><icon class=\"fas fa-regular fa-folder\"></icon></span><span><a href=\"./" + d + "/index.html\">"+d+"</a></span></span></td></tr>" for d in directories]
   file_rows = ["<tr><td><span class=\"icon-text\"><span class=\"icon\"><icon class=\"fas fa-regular fa-file-pdf\"></icon></span><span><a href=\"./" + f + "\">"+f+"</a></span></span></td></tr>" for f in files if f.endswith(".pdf")]
   template = templates["index_page.html"]    
