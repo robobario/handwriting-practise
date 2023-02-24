@@ -13,6 +13,13 @@
                "%%FONTSIZE%%": "\\fontsize{40}{48} \\selectfont"
            },
            "template": "handwriting.tex"
+       },
+       "large-font-tracing": {
+           "dir": "large-font",
+           "parameters": {
+               "%%FONTSIZE%%": "\\fontsize{40}{48} \\selectfont"
+           },
+           "template": "handwriting-tracing.tex"
        }
    }
 }
