@@ -1,0 +1,73 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[left=1.5cm, right=1.5cm, top=1.5cm, bottom=1.5cm]{geometry}
+% necessary packages
+\usepackage{tikz}
+
+% set the font
+\usepackage{fontspec}
+\setmainfont{[kiwischoolhandwritingregular.ttf]}
+
+% increase baseline skip
+\usepackage{setspace}
+\setstretch{3.5}
+
+% define height of lowercase letters
+\newcommand{\lowercaseheight}{1ex}
+% define height of uppercase letters
+\newcommand{\uppercaseheight}{1.7ex}
+% define depth of descenders
+\newcommand{\descenderdeptha}{-1.5ex}
+\newcommand{\descenderdepthb}{-2.2ex}
+\newcommand{\descenderdepthc}{-3.2ex}
+    % you may add more values here and then use them in the {tikzpicture}
+    % to add more line to your grid
+
+
+% package to have a "every line" hook
+\usepackage{lineno}
+
+\newenvironment{drillsheet}{%
+    % let the "line numbers" start directly at the text
+    \setlength\linenumbersep{0pt}%
+    % let the "line numbers" be the grid
+    \renewcommand{\thelinenumber}{%
+        \begin{tikzpicture}[overlay]
+                \color{black!90}%
+                % baseline
+                \draw [semithick] ((0,0) -- ++(\textwidth,0);
+                % lowercase height
+                \draw [semithick, densely dotted] ((0,\lowercaseheight) -- ++(\textwidth,0);
+                % uppercase height
+                \draw [semithick] ((0,\uppercaseheight) -- ++(\textwidth,0);
+                % descender depth
+                \draw [semithick] (0,\descenderdeptha) -- ++(\textwidth,0);
+                \draw [semithick, densely dotted] (0,\descenderdepthb) -- ++(\textwidth,0);
+                \draw [semithick] (0,\descenderdepthc) -- ++(\textwidth,0);
+        \end{tikzpicture}%
+    }%
+    % the font and color of the numbers must be set explicitly
+    \renewcommand\linenumberfont{\normalfont\color{black}}
+    % start "line numbering", i.e. the grid
+    \begin{linenumbers}%
+        % set text color to gray
+        \color{black}%
+}{
+    % end "numbering", i.e. the grid
+    \end{linenumbers}%
+}
+
+\newenvironment{fakedisplaymath}{%
+   \begin{center}%
+   $\displaystyle
+}{%
+   $%
+   \end{center}%
+}
+
+\begin{document}
+\thispagestyle{empty}
+\Huge
+\begin{drillsheet}
+
+\end{drillsheet}
+\end{document}

@@ -85,8 +85,9 @@ def generate_index(path, relative_dir="/"):
   rows = dir_blob + "\n" + file_blob
   template = template.replace("%%HEADER%%", header)
   template = template.replace("%%ROWS%%", rows)
-  with open(os.path.join(path, "index.html"), "w") as out:
-      out.write(template)
+  if relative_dir != "/":
+      with open(os.path.join(path, "index.html"), "w") as out:
+          out.write(template)
   for dir in directories:
       generate_index(os.path.join(path, dir), os.path.join(relative_dir, dir))
     
