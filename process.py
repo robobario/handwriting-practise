@@ -63,11 +63,13 @@ def process(dir, subpath, config):
     if os.path.isdir(f):
         process(os.path.join(dir, filename), os.path.join(subpath, filename), config)
 
-def generate_index(path, relative_dir="/"):
+def generate_index(path, relative_dir="/", parent=""):
   if relative_dir == "/":
     header = "NZ Handwriting Sheets"
   else:
     header = os.path.basename(path)
+  current_dir_displayname = header
+    
   directories = []
   files = []
   for filename in os.listdir(path):
@@ -83,14 +85,15 @@ def generate_index(path, relative_dir="/"):
   template = templates["index_page.html"]    
   file_blob = "\n".join(file_rows)
   dir_blob= "\n".join(dir_rows)
-  rows = dir_blob + "\n" + file_blob
+  parent_row="<tr><td><span class=\"icon-text\"><span class=\"icon\"><icon class=\"fas fa-solid fa-chevron-up\"></icon></span><span><a href=\"../index.html\">"+parent+"</a></span></span></td></tr>"
+  rows = parent_row + "\n" + dir_blob + "\n" + file_blob
   template = template.replace("%%HEADER%%", header)
   template = template.replace("%%ROWS%%", rows)
   if relative_dir != "/":
       with open(os.path.join(path, "index.html"), "w") as out:
           out.write(template)
   for dir in directories:
-      generate_index(os.path.join(path, dir), os.path.join(relative_dir, dir))
+      generate_index(os.path.join(path, dir), os.path.join(relative_dir, dir), current_dir_displayname)
     
 
 for key, sample in config["samples"].items():
