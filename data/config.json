@@ -3,6 +3,7 @@
        "medium-font": {
            "dir": "medium-font",
            "parameters": {
+               "%%FONT%%": "DnealianManuscript.ttf",
                "%%FONTSIZE%%": "\\Huge"
            },
            "template": "handwriting.tex"
@@ -10,6 +11,7 @@
        "large-font": {
            "dir": "large-font",
            "parameters": {
+               "%%FONT%%": "DnealianManuscript.ttf",
                "%%FONTSIZE%%": "\\fontsize{40}{48} \\selectfont"
            },
            "template": "handwriting.tex"
@@ -17,6 +19,7 @@
        "large-font-tracing": {
            "dir": "large-font-tracing",
            "parameters": {
+               "%%FONT%%": "DnealianManuscript.ttf",
                "%%FONTSIZE%%": "\\fontsize{40}{48} \\selectfont"
            },
            "template": "handwriting-tracing.tex"

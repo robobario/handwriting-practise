@@ -6,6 +6,7 @@ directory = sys.argv[1]
 outdir = sys.argv[2]
 uid = int(sys.argv[3])
 gid = int(sys.argv[4])
+regen = sys.argv[5] == "True"
 
 with open(os.path.join(directory, "config.json")) as f:
   config = json.load(f)
@@ -44,7 +45,7 @@ def process(dir, subpath, config):
     if os.path.isfile(f):
         out_pdf_file = os.path.join(filename + ".pdf")
         target_file = os.path.join(outsubdir, out_pdf_file)
-        if os.path.isfile(target_file):
+        if (not regen) and os.path.isfile(target_file):
            print("skipping " + f + " as pdf exists already in out dir")
         else:
            body = read(f).strip()
@@ -57,7 +58,7 @@ def process(dir, subpath, config):
            out_tex_file = os.path.join(outsubdir, filename + ".tex")
            with open(out_tex_file, "w") as out:
               out.write(template)
-           os.system('/root/bin/xelatex "' + out_tex_file + '"')
+           os.system('/root/bin/xelatex --halt-on-error "' + out_tex_file + '"')
            shutil.move(out_pdf_file, target_file)
            os.remove(out_tex_file)
     if os.path.isdir(f):
