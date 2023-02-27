@@ -57,19 +57,22 @@
     var configName = document.getElementById("config_name");
     var failureNotification = document.getElementById("failure");
     var loading = document.getElementById("loading");
-    document.getElementById("submit").onclick = function (ev) {
+    let submit = document.getElementById("submit");
+    submit.onclick = function (ev) {
         var body = bodyArea.value;
         var config = configName.value
         var jsonBlob = {
             "body": body,
             "config_name": config
         }
+        submit.style.setProperty("display", "none")
         loading.style.removeProperty("display");
         axios.post('https://handwriting-practise.herokuapp.com/sheet', jsonBlob, {
             responseType: "arraybuffer"
         })
             .then(function (response) {
                 console.log(response);
+                submit.style.removeProperty("display")
                 failureNotification.style.setProperty("display", "none")
                 loading.style.setProperty("display", "none")
                 var bytes = new Uint8Array(response.data);
@@ -79,6 +82,7 @@
                 link.download="myFileName.pdf";
                 link.click();
             }).catch(function (error) {
+                submit.style.removeProperty("display")
                 failureNotification.style.removeProperty("display")
                 loading.style.setProperty("display", "none")
                 console.log(error);
