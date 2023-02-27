@@ -1,6 +1,6 @@
 import tempfile
 
-from bottle import post, run, request, response, hook, route
+from bottle import post, run, request, response, hook, route, HTTPError
 import os
 import json
 
@@ -23,6 +23,8 @@ def read_bytes(path):
 @post('/sheet')
 def sheet():
     body = request.json["body"]
+    if len(body) > 5000:
+        raise HTTPError(status=400, body="body too long")
     config_name = request.json["config_name"]
     with tempfile.TemporaryDirectory() as tmpdirname:
         print('created temporary directory', tmpdirname)
